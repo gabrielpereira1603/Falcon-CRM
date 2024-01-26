@@ -14,4 +14,8 @@ class Site
         require_once __DIR__ . '/../views/login.php';
     }
     
+    public function cadastrarAtendimento() 
+    {
+        require_once __DIR__ . '/../views/cadastrarAtendimento.php';
+    }
 }

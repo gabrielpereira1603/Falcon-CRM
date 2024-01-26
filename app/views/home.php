@@ -6,7 +6,6 @@
         <link rel="shortcut icon" href="config\images\LOGOTIPO-WHITE-PNG.png" type="image/x-icon">
         <title>Falcon CRM</title>
         <link rel="stylesheet" href="config/css/home.css">
-        <link rel="stylesheet" href="config/css/cabecario.css">
         <link rel="stylesheet" href="config/node_modules/bootstrap/dist/css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
         <link rel="stylesheet" href="config/css/style.css">
@@ -25,7 +24,7 @@
                                 </h1>
                             </div>
                             <div>
-                                <a href="" class="btn btn-warning">Cadastrar</a>
+                                <a href="?router=Site/cadastrarAtendimento" class="btn btn-warning">Cadastrar</a>
                             </div>
                         </div>
                     </section>

@@ -3,7 +3,7 @@
                 <h1><a href="#" class="logo"><img src="config/images/LOGOTIPO-ALLWHITE-PNG.png" alt="" width="80px"></a></h1>
                 <ul class="list-unstyled components mb-5">
                     <li id="icons-side" class="active">
-                        <a href="?router=Site/login"><i class="bi bi-house-door"></i> <span></span>Home</a>
+                        <a href="?router=Site/home"><i class="bi bi-house-door"></i> <span></span>Home</a>
                     </li>
                     <li>
                         <a href="#"><i class="bi bi-clipboard-data"></i> <span></span>Dashboard</a>
