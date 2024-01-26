@@ -1,0 +1,84 @@
+.cadastro {
+    height: 7rem;
+    border: 1px solid grey !important;
+    border-radius: 5px;
+    -webkit-box-shadow: 13px 11px 17px -8px rgba(145, 143, 145, 1);
+    -moz-box-shadow: 13px 11px 17px -8px rgba(145, 143, 145, 1);
+    box-shadow: 13px 11px 17px -8px rgba(145, 143, 145, 1);
+}
+
+.cadastro a {
+    color: black;
+}
+
+.cadastro a:hover {
+    color: #000000;
+}
+
+.button-cadastro {
+    color: black !important;
+}
+
+
+/* Definição de tamanhos relativos para responsividade */
+.cadastro h1 i {
+    font-size: 1em;
+    margin-left: 20px;
+    /* Define o tamanho do ícone em relação ao tamanho da fonte do pai */
+}
+
+.cadastro h1 a {
+    font-size: 1em;
+    margin-left: 20px;
+    /* Define o tamanho do texto em relação ao tamanho da fonte do pai */
+}
+
+.cadastro .btn {
+    font-size: 1.5em;
+    /* Define o tamanho do botão em relação ao tamanho da fonte do pai */
+}
+
+@media (max-width: 768px) {
+
+    .cadastro {
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    /* Reduz tamanhos para telas menores que 768px */
+    .cadastro h1 i {
+        font-size: 1em;
+    }
+
+    .cadastro h1 a {
+        font-size: 1em;
+    }
+
+    .cadastro .btn {
+        margin-bottom: 15px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 576px) {
+    .cadastro {
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    /* Reduz tamanhos para telas menores que 576px */
+    .cadastro h1 i {
+        font-size: 0.8em;
+        margin-left: 10px;
+    }
+
+    .cadastro h1 a {
+        font-size: 0.8em;
+        margin-left: 10px;   
+    }
+
+    .cadastro .btn {
+        margin-bottom: 15px;
+        font-size: 1em;
+    }
+}
