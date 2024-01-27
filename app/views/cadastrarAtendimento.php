@@ -9,26 +9,43 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
         <link rel="stylesheet" href="config/css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <script src="config/js/alerts"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
         <div class="wrapper d-flex align-items-stretch">
             <?php include("cabecario.php");?>
+
+            <?php if (isset($_SESSION['error_message'])): ?>
+            <script>
+                showErrorAlert('<?php echo $_SESSION['error_message']; ?>');
+            </script>
+            <?php unset($_SESSION['error_message']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['success_message'])): ?>
+                <script>
+                    showSucessoAlert('<?php echo $_SESSION['success_message']; ?>');
+                </script>
+                <?php unset($_SESSION['success_message']); ?>
+            <?php endif; ?>
+
             <div>
                 <h3>Cadastrar atendimento</h3>
             </div>
             
-            <section class="cadastro">
+            <form method="POST" action="?router=AtendimentoController/CadastroAtendimento" class="cadastro">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="nomeCliente" class="form-label">Nome do cliente:</label>
-                            <input type="text" class="form-control" id="nomeCliente" placeholder="...">
+                            <input type="text" class="form-control" id="nomeCliente" name="nomeCliente" placeholder="..." required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="telefone" class="form-label">Telefone:</label>
-                            <input type="tel" class="form-control" id="telefone" placeholder="(00) 9 0000-0000">
+                            <input type="number" class="form-control" id="telefone" name="telefone" placeholder="(00) 9 0000-0000" required>
                         </div>
                     </div>
                 </div>
@@ -37,21 +54,21 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="cursoNegociado" class="form-label">Curso negociado:</label>
-                            <input type="text" class="form-control" id="cursoNegociado" placeholder="...">
+                            <input type="text" class="form-control" id="cursoNegociado" name="cursoNegociado" placeholder="..." required>
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="horario-inicio" class="form-label">Início do atendimento:</label>
-                            <input type="time" class="form-control" id="horario-inicio" placeholder="...">
+                            <input type="time" class="form-control" id="horario-inicio" name="horarioInicio" placeholder="..." required>
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="horario-fim" class="form-label">Fim do atendimento:</label>
-                            <input type="time" class="form-control" id="horario-fim" placeholder="...">
+                            <input type="time" class="form-control" id="horario-fim" name="horarioFim" placeholder="..." required>
                         </div>
                     </div>
                 </div>
@@ -60,25 +77,32 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="descricao" class="form-label">Descrição do atendimento:</label>
-                            <textarea class="form-control" id="descricao" rows="3"></textarea>
+                            <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="lembrete" class="form-label">Lembretes:</label>
-                            <textarea class="form-control" id="observacoes" rows="3"></textarea>
+                            <textarea class="form-control" id="observacoes" name="lembrete" rows="3" required></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-warning" style="margin-top: 10px;" type="button" onclick="limparCookies()">Finalizar Atendimento</button>
-                    <button class="btn btn-warning ml-2" style="margin-top: 10px;" type="button" onclick="limparCookies()">Finalizar Atendimento</button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <button class="btn btn-danger mb-2 w-100" style="margin-top: 5px;" type="button" onclick="limparCookiesEFormulario('excluir')" name="excluir">Excluir Atendimento</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <button class="btn btn-warning mb-2 w-100" style="margin-top: 5px;" type="submit"  name="finalizar">Finalizar Atendimento</button>
+                        </div>
+                    </div>
                 </div>
-
-            </section>
-
+            </form>
         </div>
 
 

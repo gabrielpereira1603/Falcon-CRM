@@ -9,13 +9,19 @@
                         <a href="#"><i class="bi bi-clipboard-data"></i> <span></span>Dashboard</a>
                     </li>
                     <li>
-                        <a href="#"><i class="bi bi-server"></i> <span></span>Relatório</a>
+                        <a href="?router=Site/relatorio"><i class="bi bi-server"></i> <span></span>Relatório</a>
                     </li>
                     <li>
-                        <a href="#"><i class="bi bi-person-lines-fill"></i> <span></span>Contacts</a>
+                        <a href="?router=Site/contatos"><i class="bi bi-person-lines-fill"></i> <span></span>Contacts</a>
                     </li>
                     <li>
                         <a href="#"><i class="bi bi-gear"></i> <span></span>Services</a>
+                    </li>
+
+                    <li>
+                        <form method="post" action="?router=FuncionarioController/logout">
+                            <button type="submit" class="btn btn-link nav-link sair-button">Sair</button>   
+                        </form>
                     </li>
                 </ul>
 

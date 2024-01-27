@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="config/css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
+
     <body>
         <div class="wrapper d-flex align-items-stretch">
             <?php include("cabecario.php");?>
@@ -37,7 +38,7 @@
                                 </h1>
                             </div>
                             <div>
-                                <a href="" class="btn btn-warning">Vizualizar</a>
+                                <a href="?router=Site/agenda" class="btn btn-warning">Vizualizar</a>
                             </div>
                         </div>
                     </section>
