@@ -70,5 +70,15 @@ class Site extends AuxiliarModel
         require_once __DIR__ . '/../views/relatorio.php';
     }
 
+    public function resultadoRelatorio() 
+    {
+        session_start();
+        if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] !== true) {
+            $_SESSION['error'] = 'Voçê não tem permissão para acessar!';            
+            header("Location:?router=Site/login");
+            exit();
+        }
+        require_once __DIR__ . '/../views/resultadoRelatorio.php';
+    }
     
 }

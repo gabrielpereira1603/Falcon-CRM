@@ -17,6 +17,9 @@ class AtendimentoController extends AtendimentoModel
         $horario_fim = $_POST['horarioFim'];
         $descricao = $_POST['descricao'];
         $lembrete = $_POST['lembrete'];
+        $dataAtual = date("Y-m-d");
+
+        
        // Limpar os cookies
        setcookie('nomeCliente', '', time() - 3600);
        setcookie('telefone', '', time() - 3600);
@@ -25,17 +28,20 @@ class AtendimentoController extends AtendimentoModel
        setcookie('horarioFim', '', time() - 3600);
        setcookie('descricao', '', time() - 3600);
        setcookie('lembrete', '', time() - 3600);
-        var_dump($cod_funcionario, $nome_cliente, $telefone_cliente, $curso_negociado, $horario_inicio, $horario_fim, $descricao, $lembrete);
-
-        $atendimentoModel = new AtendimentoModel();
-        $success = $atendimentoModel->cadastro($nome_cliente, $telefone_cliente, $curso_negociado, $horario_inicio, $horario_fim, $descricao, $lembrete, $cod_funcionario, $nome_funcionario);
+       var_dump($nome_cliente, $telefone_cliente, $curso_negociado, $horario_inicio, $horario_fim, $dataAtual, $descricao, $lembrete, $cod_funcionario, $nome_funcionario);
        
-        if ($success) { 
-            $_SESSION['error_message'] = 'Houve um erro ao enviar a reclamação.';
-            header("Location: ?router=Site/cadastrarAtendimento");
+        $atendimentoModel = new AtendimentoModel();
+        $result = $atendimentoModel->cadastro($nome_cliente, $telefone_cliente, $curso_negociado, $horario_inicio, $horario_fim, $dataAtual, $descricao, $lembrete, $cod_funcionario, $nome_funcionario);
+        
+        // Verifica o tipo de retorno da função
+        if ($result === true) {
+            $_SESSION['success_message'] = 'Atendimento cadastrado com sucesso!';
         } else {
-            $_SESSION['success_message'] = 'Reclamação enviada com sucesso!';
-            header("Location: ?router=Site/cadastrarAtendimento");
+            $_SESSION['error_message'] = $result; // Mensagem de erro
         }
+
+        // Redireciona para a página adequada
+        header("Location: ?router=Site/cadastrarAtendimento");
     }
 }
+

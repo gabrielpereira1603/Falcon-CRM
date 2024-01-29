@@ -17,10 +17,10 @@ class FuncionarioController extends FuncionarioModel
         $autenticado = $funcionarioModel->autenticarUser($login, $senha, $nome_funcionario);
 
         if ($autenticado) {
-            header("Location:?router=Site/cadastrarAtendimento");
+            header("Location:?router=Site/home");
         } else {
             $_SESSION['error_admin'] = 'Dados inválidos';
-            header("Location:?router=Site/home");
+            header("Location:?router=Site/login");
         }
 
     }

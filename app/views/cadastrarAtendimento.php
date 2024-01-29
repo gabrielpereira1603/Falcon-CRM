@@ -105,7 +105,6 @@
             </form>
         </div>
 
-
         <script src="config/js/jquery.min.js"></script>
         <script src="config/js/popper.js"></script>
         <script src="config/js/bootstrap.min.js"></script>
