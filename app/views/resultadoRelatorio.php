@@ -19,13 +19,14 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     </head>
+
     <body>
         <div class="wrapper d-flex align-items-stretch">
             <?php include("cabecario.php");?>
-            <?php if (isset($_SESSION['error_message'])): ?>
-                <script>
-                    showErrorAlert('<?php echo $_SESSION['error_message']; ?>');
-                </script>
+                <?php if (isset($_SESSION['error_message'])): ?>
+                    <script>
+                        showErrorAlert('<?php echo $_SESSION['error_message']; ?>');
+                    </script>
                 <?php unset($_SESSION['error_message']); ?>
             <?php endif; ?>
             <?php if (isset($_SESSION['success_message'])): ?>
@@ -72,20 +73,25 @@
                     </div>
             <?php
                     }
+                }else {
+                    echo "Nenhum informação a ser mostrada";
                 }
             ?>
-        <script>
-            $(document).ready(function () {
-                $("#tabela-manutencao").DataTable();
-            });
-            
-        </script>
-        
+
         <script src="config/js/jquery.min.js"></script>
         <script src="config/js/popper.js"></script>
         <script src="config/js/bootstrap.min.js"></script>
         <script src="config/js/main.js"></script>
         <script src="config/js/relatorio.js"></script>
         <script src="config/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+        <!-- Inicialização do DataTable -->
+        <script>
+            $(document).ready(function () {
+                $("#tabela-manutencao").DataTable();
+            });
+        </script>
+
     </body>
 </html>

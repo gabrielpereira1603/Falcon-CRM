@@ -31,6 +31,9 @@ class Site extends AuxiliarModel
             header("Location:?router=Site/login");
             exit();
         }
+        $buscarTipoAtendimento = $this->getTipoAtendimento();
+        $buscarCursos = $this->getCursos();
+        $contarAtendimento = $this->countAtendimento();
         require_once __DIR__ . '/../views/cadastrarAtendimento.php';
     }
 
@@ -78,6 +81,7 @@ class Site extends AuxiliarModel
             header("Location:?router=Site/login");
             exit();
         }
+
         require_once __DIR__ . '/../views/resultadoRelatorio.php';
     }
     

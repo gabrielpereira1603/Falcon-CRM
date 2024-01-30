@@ -34,3 +34,12 @@
 .lembrete-actions button {
     margin-right: 10px;
 }
+
+.btn-close {
+    border: none;
+    background-color: transparent;
+}
+
+.btn-close i {
+    color: red;
+}

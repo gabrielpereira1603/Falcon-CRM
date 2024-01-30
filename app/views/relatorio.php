@@ -30,7 +30,25 @@
                 </script>
                 <?php unset($_SESSION['success_message']); ?>
             <?php endif; ?>
-                            
+            <?php
+                if (isset($_SESSION['dados-relatorio'])) {
+                    $dados = $_SESSION['dados-relatorio'];
+                    if (empty($dados)) { ?>
+                        <script>
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Nenhum resultado encontrado',
+                                text: 'Sua pesquisa não retornou nenhum resultado.',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                            });
+                        </script>
+                <?php
+                    }
+                    unset($_SESSION['dados-relatorio']);
+                }
+            ?>
+
             <div class="container">
                 <h3>Gerar Relatório Personalizado</h3>
                 <form action="?router=RelatorioController/filtroRelatorio" method="post" onsubmit="exibirRelatorio()">
