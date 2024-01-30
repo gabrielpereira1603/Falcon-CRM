@@ -104,6 +104,7 @@
 
         <script>
          async function createPdf() {
+            console.log('chamndo');
             const doc = new PDFDocument();
 
             // Adiciona os dados ao documento
