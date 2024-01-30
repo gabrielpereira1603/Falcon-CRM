@@ -10,7 +10,8 @@
     <button onclick="createPdf()">Create PDF</button>
     <p class="small">(Your browser will download the resulting file)</p>
   </body>
-
+  const logoImageBytes = await fetch('https://raw.githubusercontent.com/gabrielpereira1603/Falcon-CRM/main/config/images/LOGOTIPO-BLACK-PNG.png').then(res => res.arrayBuffer());
+  const logoEmpresaImageBytes = await fetch('https://raw.githubusercontent.com/gabrielpereira1603/Falcon-CRM/main/config/images/LOGOTIPO-2COR.png').then(res => res.arrayBuffer());
   <script>
     const { PDFDocument, StandardFonts, rgb } = PDFLib
 

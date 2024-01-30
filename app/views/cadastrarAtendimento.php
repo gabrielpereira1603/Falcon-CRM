@@ -30,40 +30,6 @@
                 </script>
                 <?php unset($_SESSION['success_message']); ?>
             <?php endif; ?>
-
-            <?php 
-                // Inicializa as contagens por tipo
-                $contagemPorTipo = array(
-                    'Discado' => 0,
-                    'Atendido' => 0,
-                    'Falado' => 0,
-                    'Retorno' => 0
-                );
-
-                // Calcula a contagem por tipo
-                foreach ($contarAtendimento as $atendimento) {
-                    switch ($atendimento['nome_tipo']) {
-                        case 'Discado':
-                            $contagemPorTipo['Discado']++;
-                            break;
-                        case 'Atendido':
-                            $contagemPorTipo['Atendido']++;
-                            break;
-                        case 'Falado':
-                            $contagemPorTipo['Falado']++;
-                            break;
-                        case 'Retorno':
-                            $contagemPorTipo['Retorno']++;
-                            break;
-                        default:
-                            // Outros tipos de atendimento
-                            break;
-                    }
-                }
-
-                // Calcula o total de atendimentos
-                $totalAtendimentos = array_sum($contagemPorTipo);
-            ?>
             
             <div>
                 <h3>Cadastrar atendimento</h3>
@@ -92,7 +58,7 @@
                             <label for="browser" class="form-label">Curso negociado: 
                                 <a href="#" title="Clique para adicionar um novo curso ao atendimento" id="adicionarCurso"><i class="bi bi-plus-circle-fill"></i></a>
                             </label>
-                            <select class="form-control" id="cursoNegociado" name="browser">
+                            <select class="form-control" id="cursoNegociado" name="browser[]">
                                 <option value="">Selecione o curso</option>
                                 <?php foreach ($buscarCursos as $curso): ?>
                                     <option value="<?php echo $curso['nome_curso']; ?>"><?php echo $curso['nome_curso']; ?></option>
@@ -102,11 +68,11 @@
                     </div>
 
                     <div class="col-md-3 mt-1">
-                        <label for="cursoNegociado" class="form-label">Tipo Atendimento:</label>
+                        <label for="cursoNegociado" class="form-label">*Tipo Atendimento:</label>
                         <div class="mb-3">
                             <?php foreach ($buscarTipoAtendimento as $tipo): ?>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="<?php echo $tipo['nome_tipo']; ?>" value="<?php echo $tipo['codtipo_atendimento']; ?>" name="tipo_atendimento[]">
+                                    <input class="form-check-input" type="radio" id="<?php echo $tipo['nome_tipo']; ?>" value="<?php echo $tipo['codtipo_atendimento']; ?>" name="tipo_atendimento[]" required>
                                     <label class="form-check-label" for="<?php echo $tipo['nome_tipo']; ?>"><?php echo $tipo['nome_tipo']; ?></label>
                                 </div>
                             <?php endforeach; ?>
@@ -166,42 +132,51 @@
             </form>
 
             <div class="row">
+                <!-- Bloco para mostrar os tipos de atendimento -->
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Tipos de Atendimento</h5>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Total de Atendimentos
-                                    <span class="badge bg-primary rounded-pill"><?php echo $totalAtendimentos; ?></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Discados
-                                    <span class="badge bg-info rounded-pill"><?php echo $contagemPorTipo['Discado']; ?></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Atendidos
-                                    <span class="badge bg-success rounded-pill"><?php echo $contagemPorTipo['Atendido']; ?></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Falados
-                                    <span class="badge bg-warning rounded-pill"><?php echo $contagemPorTipo['Falado']; ?></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Retornos
-                                    <span class="badge bg-danger rounded-pill"><?php echo $contagemPorTipo['Retorno']; ?></span>
-                                </li>
+                                <?php foreach ($contarAtendimento as $atendimento): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?php echo $atendimento['nome_tipo']; ?>
+                                        <span class="badge bg-primary rounded-pill"><?php echo $atendimento['total_atendimentos_tipo']; ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloco para mostrar os atendimentos do dia atual -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Atendimentos do Dia Atual</h5>
+                            <ul class="list-group list-group-flush">
+                                <?php foreach ($contarAtendimentoDiaAtual as $atendimentoDiaAtual): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?php echo $atendimentoDiaAtual['nome_tipo']; ?>
+                                        <span class="badge bg-primary rounded-pill"><?php echo $atendimentoDiaAtual['total_atendimentos_tipo']; ?></span>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
         <script>
             $(document).ready(function() {
+                var cursoCounter = 0; // Contador para atribuir nomes únicos aos selects de curso
+
                 $('#adicionarCurso').click(function(e) {
                     e.preventDefault();
-                    $('#cursoNegociadoContainer').append('<div class="mb-3"><select class="form-control mt-2" name="browser"><option value="">Selecione o curso</option><?php foreach ($buscarCursos as $curso): ?><option value="<?php echo $curso['nome_curso']; ?>"><?php echo $curso['nome_curso']; ?></option><?php endforeach; ?></select><button class="btn btn-danger btn-sm limparSelect mt-2">Limpar</button></div>');
+                    cursoCounter++; // Incrementa o contador para cada novo select de curso adicionado
+                    var selectHtml = '<div class="mb-3"><select class="form-control mt-2" name="browser[]' + cursoCounter + '"><option value="">Selecione o curso</option><?php foreach ($buscarCursos as $curso): ?><option value="<?php echo $curso['nome_curso']; ?>"><?php echo $curso['nome_curso']; ?></option><?php endforeach; ?></select><button class="btn btn-danger btn-sm limparSelect mt-2">Limpar</button></div>';
+                    $('#cursoNegociadoContainer').append(selectHtml);
                 });
 
                 $(document).on('click', '.limparSelect', function() {

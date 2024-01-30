@@ -37,15 +37,14 @@
             <div class="principal">
                 <h1>Agenda de Tarefas</h1>
                 <div class="agenda">
-                    <?php foreach ($atendimentos as $atendimento): ?>
+                    <?php foreach ($buscarRetornos as $retornos): ?>
                         <div class="lembrete-card">
                             <div class="lembrete-content">
-                                <h3 class="cliente-nome"><?php echo $atendimento['nome_cliente']; ?></h3>
-                                <p class="cliente-numero"><?php echo $atendimento['telefone_cliente']; ?></p>
-                                <p class="lembrete-texto">Curso: <?php echo $atendimento['curso_negociado']; ?></p>
-                                <p class="lembrete-texto">Lembrete: <?php echo $atendimento['lembrete']; ?></p>
+                                <h3 class="cliente-nome"><?php echo $retornos['nome_cliente']; ?></h3>
+                                <p class="cliente-numero"><?php echo $retornos['telefone_cliente']; ?></p>
+                                <p class="lembrete-texto">Curso(s): <?php echo $retornos['cursos_relacionados']; ?></p>
+                                <p class="lembrete-texto">Data de retorno: <?php echo $retornos['data_hora_retorno_formatada']; ?></p>
                             </div>
-                            <form action="?router=AgendaController/deleteLembrete" method="POST" class="lembrete-actions">
                                 <button class="btn btn-primary btn-editar" data-bs-toggle="modal" data-bs-target="#popupEditar">Editar</button>
                                 <button type="submit" class="btn btn-danger">Excluir</button>
                             </form>

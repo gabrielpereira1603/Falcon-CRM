@@ -31,6 +31,7 @@ class AtendimentoModel extends Connection
                 $cod_cliente = $conn->lastInsertId();
             }
     
+            // Inserir o atendimento
             $query = "INSERT INTO atendimento (
                 inicio_atendimento, 
                 fim_atendimento, 
@@ -63,11 +64,26 @@ class AtendimentoModel extends Connection
     
             // Lidar com a tabela de associação entre atendimento e curso
             $cod_atendimento = $conn->lastInsertId();
-            foreach ($tipo_atendimento as $tipo) {
-                $query = "INSERT INTO atendimento_tipo (codatendimento, codtipo_atendimento) VALUES (:codatendimento, :codtipo_atendimento)";
+            foreach ($curso_negociado as $curso) {
+                // Verificar se o curso já existe
+                $query = "SELECT codcurso FROM curso WHERE nome_curso = :nome_curso";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':nome_curso', $curso);
+                $stmt->execute();
+                $resultCurso = $stmt->fetch();
+    
+                if ($resultCurso) {
+                    $cod_curso = $resultCurso['codcurso'];
+                } else {
+                    // Trate a situação em que o curso não existe
+                    // Aqui você pode optar por inserir o curso na tabela de cursos, se necessário
+                }
+    
+                // Insere na tabela de associação
+                $query = "INSERT INTO atendimento_curso (codatendimento, codcurso) VALUES (:codatendimento, :codcurso)";
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':codatendimento', $cod_atendimento);
-                $stmt->bindParam(':codtipo_atendimento', $tipo);
+                $stmt->bindParam(':codcurso', $cod_curso);
                 $stmt->execute();
             }
     

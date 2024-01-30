@@ -34,6 +34,7 @@ class Site extends AuxiliarModel
         $buscarTipoAtendimento = $this->getTipoAtendimento();
         $buscarCursos = $this->getCursos();
         $contarAtendimento = $this->countAtendimento();
+        $contarAtendimentoDiaAtual = $this->countAtendimentoDiaAtual();
         require_once __DIR__ . '/../views/cadastrarAtendimento.php';
     }
 
@@ -45,7 +46,7 @@ class Site extends AuxiliarModel
             header("Location:?router=Site/login");
             exit();
         }
-        $atendimentos = $this->getAtendimentos();
+        $buscarRetornos = $this->getRetornos();
         require_once __DIR__ . '/../views/agenda.php';
     }
 

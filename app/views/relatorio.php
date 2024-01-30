@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
+<head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="config\images\LOGOTIPO-WHITE-PNG.png" type="image/x-icon">
         <title>Falcon CRM</title>
         <link rel="stylesheet" href="config/css/relatorio.css">
-        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
         <link rel="stylesheet" href="config/css/style.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="config/node_modules/bootstrap/dist/css/bootstrap.min.css">
         <script src="config/js/alerts"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
         <script src="https://unpkg.com/pdf-lib@1.4.0"></script>
         <script src="https://unpkg.com/downloadjs@1.4.7"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     </head>
     <body>
         <div class="wrapper d-flex align-items-stretch">
@@ -85,9 +89,8 @@
                     <div class="atendimento">
                         <p><strong>Nome do Cliente:</strong> <?php echo $atendimento['nome_cliente']; ?></p>
                         <p><strong>Telefone:</strong> <?php echo $atendimento['telefone_cliente']; ?></p>
-                        <p><strong>Curso Negociado:</strong> <?php echo $atendimento['curso_negociado']; ?></p>
+                        <p><strong>Curso Negociado:</strong> <?php echo $atendimento['cursos_relacionados']; ?></p>
                         <p><strong>Descrição do Atendimento:</strong> <?php echo $atendimento['descricao_atendimento']; ?></p>
-                        <p><strong>Lembrete:</strong> <?php echo $atendimento['lembrete']; ?></p>
                     </div>
                 <?php endforeach; ?>
                 <div class="row">
@@ -100,96 +103,44 @@
         </div>
 
         <script>
-            const { PDFDocument, StandardFonts, rgb } = PDFLib;
-            var codfuncionario = <?php echo json_encode($codfuncionario); ?>;
-            async function createPdf() {
-                // Create a new PDFDocument
-                const pdfDoc = await PDFDocument.create();
+         async function createPdf() {
+            const doc = new PDFDocument();
 
-                // Embed the Times Roman font
-                const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+            // Adiciona os dados ao documento
+            const tableHeaders = ['Nome do Cliente', 'Telefone', 'Curso Negociado', 'Descrição do Atendimento'];
 
-                // Add a blank page to the document
-                const page = pdfDoc.addPage();
+            // Posição inicial na página
+            let y = 50;
 
-                // Get the width and height of the page
-                const { width, height } = page.getSize();
+            // Adiciona o título do relatório
+            doc.fontSize(20).text('Relatório Diário', { align: 'center' });
+            y += 50;
 
-                let y = height - 50;
-                const fontSize = 12;
+            // Adiciona a tabela de dados
+            doc.table({
+                headers: tableHeaders,
+                rows: buscarRelatorio.map(atendimento => [
+                    atendimento.nome_cliente,
+                    atendimento.telefone_cliente,
+                    atendimento.cursos_relacionados,
+                    atendimento.descricao_atendimento
+                ])
+            });
 
-                // Load and embed the images
-                const logoImageBytes = await fetch('https://raw.githubusercontent.com/gabrielpereira1603/Falcon-CRM/main/config/images/LOGOTIPO-BLACK-PNG.png').then(res => res.arrayBuffer());
-                const logoEmpresaImageBytes = await fetch('https://raw.githubusercontent.com/gabrielpereira1603/Falcon-CRM/main/config/images/LOGOTIPO-2COR.png').then(res => res.arrayBuffer());
+            // Finaliza e baixa o PDF
+            doc.end();
 
-                const logoImage = await pdfDoc.embedPng(logoImageBytes);
-                const logoEmpresaImage = await pdfDoc.embedPng(logoEmpresaImageBytes);
+            // Obtém os bytes do PDF e cria um objeto Blob
+            const pdfBytes = await doc.save();
+            const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
 
-                // Draw logoImage at the top left corner
-                page.drawImage(logoImage, {
-                    x: 50,
-                    y: height - 50,
-                    width: 50, // Adjust size as needed
-                    height: 50, // Adjust size as needed
-                });
+            // Cria um link temporário para fazer o download do PDF
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(pdfBlob);
+            downloadLink.download = 'relatorio.pdf';
+            downloadLink.click();
+        }
 
-                // Draw logoEmpresaImage at the top right corner
-                page.drawImage(logoEmpresaImage, {
-                    x: width - 100,
-                    y: height - 50,
-                    width: 100, // Adjust size as needed
-                    height: 50, // Adjust size as needed
-                });
-
-                // Adjust Y position after drawing images
-                y -= 60; // Height of the images + some margin
-
-                // Fetch and draw client data
-                fetch(`?router=RelatorioController/obterDadosRelatorio&codfuncionario=${codfuncionario}`)
-                    .then(response => response.json())
-                    .then(jsonResponse => {
-                        for (const entry of jsonResponse) {
-                            // Draw card for each entry
-                            page.drawText(`Nome Cliente: ${entry.nome_cliente}`, {
-                                x: 50,
-                                y,
-                                size: fontSize,
-                            });
-                            y -= fontSize + 5;
-
-                            page.drawText(`Curso: ${entry.curso_negociado}`, {
-                                x: 50,
-                                y,
-                                size: fontSize,
-                            });
-                            y -= fontSize + 5;
-
-                            page.drawText(`Telefone: ${entry.telefone_cliente}`, {
-                                x: 50,
-                                y,
-                                size: fontSize,
-                            });
-                            y -= fontSize + 5;
-
-                            page.drawText(`Descrição Atendimento: ${entry.descricao_atendimento}`, {
-                                x: 50,
-                                y,
-                                size: fontSize,
-                            });
-                            y -= fontSize + 5;
-
-                            // Add spacing between cards
-                            y -= 20; // Adjust as needed
-                        }
-
-                    // Serialize the PDFDocument to bytes (a Uint8Array)
-                    pdfDoc.save().then(pdfBytes => {
-                        // Trigger the browser to download the PDF document
-                        download(pdfBytes, "pdf-relatorio", "application/pdf");
-                    });
-                })
-                .catch(error => console.error('Erro ao obter os dados do relatório:', error));
-            }
         </script>   
 
         <script src="config/js/jquery.min.js"></script>
