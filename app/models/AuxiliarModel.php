@@ -84,7 +84,7 @@ class AuxiliarModel extends Connection
             LEFT JOIN 
                 curso ON atendimento_curso.codcurso = curso.codcurso
             WHERE 
-                atendimento.codfuncionario_fk = 1
+                atendimento.codfuncionario_fk = :codFuncionario
             GROUP BY 
                 atendimento.codatendimento;
             ");

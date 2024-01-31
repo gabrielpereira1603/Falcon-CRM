@@ -6,7 +6,7 @@ abstract class Connection
 {
     private $bdname = 'mysql:host=localhost;dbname=falconcrm';
     private $user = 'root';
-    private $pass = 'root';
+    private $pass = '';
 
     protected function connect()
     {
